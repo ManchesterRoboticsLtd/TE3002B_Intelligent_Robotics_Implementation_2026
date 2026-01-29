@@ -24,20 +24,17 @@
    
 ## General Information
 * Duration: 10 Weeks
-* Classes: Thursday  (1 – 3 PM)
-* Starts: 27 March.
-* ZOOM Link Classes: 
-  - https://itesm.zoom.us/j/82276178487?pwd=qc6KexTmQlcCcEJw8C2hLUfWFFNlR5.1 
-  -  Meeting ID: 822 7617 8487
-  - Passcode: MCR2
+* Classes: TBD
+* Starts: TBD
+* Teams Link
 
 ## Live Sessions (Recordings)
-   [Live Sessions](https://tecmx-my.sharepoint.com/:f:/g/personal/mario_mtz_tec_mx/EhWffaOxGqhHg0oe-Ji-c2sBxt6uPXCrF18v_ddiw35M6Q?e=Pkycu8)
+   [Live Sessions](https://tecmx-my.sharepoint.com/:f:/g/personal/mario_mtz_tec_mx/IgCbVezOkciCQIynPVdkMjOAAZWw8g0K6v76bdIKhU362Bg?e=EDhBZU)
 
 
 ## General Requirements
 General requirements. Please be aware that a set of requirements especific for each session will be shown in each session subsection (Some items may be repeated).
-* Computer with access to Zoom (online classes).
+* Computer with access to Teams (online classes).
 * Computer with Ubuntu 22.04 and ROS2 Humble.
 * Knowledge of ROS.
 * Knowledge of Windows. 
