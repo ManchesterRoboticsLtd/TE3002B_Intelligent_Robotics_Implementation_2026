@@ -1,0 +1,126 @@
+import cv2 as cv
+import numpy as np
+
+# --------------------------------------
+# HSV Color Range Setup for Color Masks
+# --------------------------------------
+
+# HSV (Hue, Saturation, Value) format:
+# Hue: [0, 180], Saturation: [0, 255], Value: [0, 255]
+
+# HSV Ranges for detecting BLUE color
+H_blue_low_limit = 95
+S_blue_low_limit = 90
+V_blue_low_limit = 90
+
+H_blue_up_limit = 110
+S_blue_up_limit = 255
+V_blue_up_limit = 255
+
+
+# Configuration of OpenCV SimpleBlobDetector Parameters
+blob_detec_params = cv.SimpleBlobDetector_Params()
+
+# Thresholds for intensity difference (pixel brightness) during detection
+blob_detec_params.minThreshold = 30
+blob_detec_params.maxThreshold = 255
+
+# Filter blobs by color (white blobs if 255)
+blob_detec_params.filterByColor = True
+blob_detec_params.blobColor = 255
+
+# Filter blobs by area (size in pixels)
+blob_detec_params.filterByArea = True
+blob_detec_params.minArea = 30         # Minimum blob area
+blob_detec_params.maxArea = 10000000   # Maximum blob area
+
+# Filter blobs by convexity (how convex the shape is)
+blob_detec_params.filterByConvexity = True
+blob_detec_params.minConvexity = 0.1
+blob_detec_params.maxConvexity = 1
+
+# Filter blobs by circularity (how circular the blob is)
+blob_detec_params.filterByCircularity = True
+blob_detec_params.minCircularity = 0.5
+blob_detec_params.maxCircularity = 1 
+
+# Filter blobs by inertia (how elongated the blob is)
+blob_detec_params.filterByInertia = True
+blob_detec_params.minInertiaRatio = 0.5
+blob_detec_params.maxInertiaRatio = 1
+
+# Main Code Execution Starts Here
+if __name__ == "__main__":
+
+    # Start video capture
+    # You can switch to a webcam by using cv.VideoCapture(0)
+    video_path = 'videos/sample_video.mp4'
+    cap = cv.VideoCapture(video_path)
+    
+    if not cap.isOpened():
+        print("Cannot open camera or video file")
+
+    # Create the blob detector object with configured parameters
+    detector = cv.SimpleBlobDetector_create(blob_detec_params)
+
+    # Main loop to process each frame
+    while True:
+
+        # Capture frame from video
+        ret, image = cap.read()
+
+        # Exit the loop if no frames are returned (end of video)
+        if not ret:
+            print("Can't receive frame (stream end?). Exiting ...")
+            break
+
+        # Check for ESC key press to exit early
+        k = cv.waitKey(25) & 0xFF
+        if k == 27:
+            break
+
+        # Step 1: Convert image from BGR to HSV color space
+        hsv_image = cv.cvtColor(image, cv.COLOR_BGR2HSV)
+
+        # Step 2: Create masks for red and blue colors
+        # Blue mask: a single range
+        blue_lower_limit = np.array([H_blue_low_limit, S_blue_low_limit, V_blue_low_limit])
+        blue_upper_limit = np.array([H_blue_up_limit, S_blue_up_limit, V_blue_up_limit])
+
+        # Apply color thresholds to create binary masks
+        blue_mask = cv.inRange(hsv_image, blue_lower_limit, blue_upper_limit)
+
+        # Step 3: Apply masks to the original image for visualization
+        # Apply blue mask
+        blue_img_result = cv.bitwise_and(image, image, mask=blue_mask)
+
+        # Step 4: Convert the masked images to grayscale for further processing
+        bw_blue_res = cv.cvtColor(blue_img_result, cv.COLOR_BGR2GRAY)
+
+        # Step 5: Apply binary thresholding to highlight blobs in binary images
+        _, blue_res = cv.threshold(bw_blue_res, 33, 255, cv.THRESH_BINARY) 
+
+        # Step 6: Perform morphological operations to clean up noise
+        # Create a kernel for morphological operations
+        kernel = np.ones((5, 5), np.uint8)
+
+        # Clean blue mask: more aggressive clean-up
+        blue_res = cv.erode(blue_res, kernel, iterations=8)
+        blue_res = cv.dilate(blue_res, kernel, iterations=8)
+
+        # Step 7: Detect blobs in the cleaned binary images
+        bluekeypoints = detector.detect(blue_res)
+
+        # Step 9: Draw keypoints (blobs) on the original image
+        view_blobs = cv.drawKeypoints(image, bluekeypoints, np.array([]), 
+                                      (255, 255, 255), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+        # Step 10: Display the images for visualization/debugging
+        #cv.imshow('Original Image', image)
+        #cv.imshow('Blue Mask Applied', blue_img_result)
+        #cv.imshow('Blue Binary Mask', blue_res)
+        cv.imshow('Detected Blobs', view_blobs)
+
+    # Step 11: Release resources and close windows when done
+    cap.release()
+    cv.destroyAllWindows()

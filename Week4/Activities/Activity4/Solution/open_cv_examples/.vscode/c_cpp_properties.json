@@ -1,0 +1,31 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/mcr2/ros2_ws/install/custom_interfaces/include/**",
+        "/home/mcr2/ros2_utilities_ws/install/ros_ign_interfaces/include/**",
+        "/home/mcr2/ros2_utilities_ws/install/ros_gz_sim/include/**",
+        "/home/mcr2/ros2_utilities_ws/install/ros_gz_bridge/include/**",
+        "/home/mcr2/ros2_utilities_ws/install/ros_gz_interfaces/include/**",
+        "/home/mcr2/ros2_utilities_ws/install/micro_ros_agent/include/**",
+        "/home/mcr2/ros2_utilities_ws/install/micro_ros_msgs/include/**",
+        "/home/mcr2/ros2_utilities_ws/install/aruco_ros/include/**",
+        "/home/mcr2/ros2_utilities_ws/install/aruco_msgs/include/**",
+        "/home/mcr2/ros2_utilities_ws/install/aruco/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/mcr2/ros2_ws/src/custom_interfaces/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
